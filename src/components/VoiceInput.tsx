@@ -66,10 +66,10 @@ export function VoiceInput({ onTranscript }: VoiceInputProps) {
     <button
       type="button"
       onClick={toggleListening}
-      className={`p-4 rounded-lg font-semibold flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
+      className={`p-4 rounded-lg font-bold flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
         isListening
-          ? 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 animate-pulse'
-          : 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500'
+          ? 'bg-tan-500 hover:bg-tan-400 text-cream-50 focus:ring-tan-400 animate-pulse'
+          : 'bg-sage-600 hover:bg-sage-700 text-cream-50 focus:ring-sage-600'
       }`}
       aria-label={translate(isListening ? 'stopVoice' : 'useVoice', language)}
     >

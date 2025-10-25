@@ -4,7 +4,27 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Roboto Slab"', 'serif'],
+      },
       colors: {
+        cream: {
+          50: '#f5f5f0',
+          100: '#f5f5f0',
+        },
+        sand: {
+          100: '#e6d8c3',
+          200: '#e6d8c3',
+        },
+        tan: {
+          400: '#c2a68c',
+          500: '#c2a68c',
+        },
+        sage: {
+          600: '#5d866c',
+          700: '#4a6b57',
+          800: '#3d5949',
+        },
         neutral: {
           50: '#fafafa',
           100: '#f5f5f5',

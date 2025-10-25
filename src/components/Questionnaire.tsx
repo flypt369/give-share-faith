@@ -118,7 +118,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-green-50 dark:from-neutral-900 dark:to-neutral-800">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 to-sand-100 dark:from-neutral-900 dark:to-neutral-800">
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="max-w-4xl w-full">
           {!pathChoice && (
@@ -127,7 +127,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                 <h2 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                   {translate('chooseAction', language)}
                 </h2>
-                <p className="text-lg text-neutral-600 dark:text-neutral-400">
+                <p className="text-lg text-tan-500 dark:text-neutral-400">
                   Select one option to continue
                 </p>
               </div>
@@ -135,16 +135,16 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
               <div className="grid md:grid-cols-3 gap-6">
                 <button
                   onClick={() => setPathChoice('need')}
-                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-blue-500 hover:scale-105"
+                  className="group bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-sage-600 hover:scale-105"
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors">
-                      <Hand className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+                    <div className="w-20 h-20 bg-sand-100 dark:bg-sage-700 rounded-full flex items-center justify-center group-hover:bg-tan-400 dark:group-hover:bg-sage-600 transition-colors">
+                      <Hand className="w-10 h-10 text-sage-600 dark:text-cream-50" />
                     </div>
                     <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                       {translate('iNeed', language)}
                     </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-tan-500 dark:text-neutral-400 leading-relaxed">
                       {translate('needDescription', language)}
                     </p>
                   </div>
@@ -152,16 +152,16 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
 
                 <button
                   onClick={() => setPathChoice('give')}
-                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-green-500 hover:scale-105"
+                  className="group bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-sage-600 hover:scale-105"
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors">
-                      <HandHeart className="w-10 h-10 text-green-600 dark:text-green-400" />
+                    <div className="w-20 h-20 bg-sand-100 dark:bg-sage-700 rounded-full flex items-center justify-center group-hover:bg-tan-400 dark:group-hover:bg-sage-600 transition-colors">
+                      <HandHeart className="w-10 h-10 text-sage-600 dark:text-cream-50" />
                     </div>
                     <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                       {translate('iCanGive', language)}
                     </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-tan-500 dark:text-neutral-400 leading-relaxed">
                       {translate('giveDescription', language)}
                     </p>
                   </div>
@@ -169,16 +169,16 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
 
                 <button
                   onClick={() => setPathChoice('prayer')}
-                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-purple-500 hover:scale-105"
+                  className="group bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-sage-600 hover:scale-105"
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors">
-                      <Heart className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+                    <div className="w-20 h-20 bg-sand-100 dark:bg-sage-700 rounded-full flex items-center justify-center group-hover:bg-tan-400 dark:group-hover:bg-sage-600 transition-colors">
+                      <Heart className="w-10 h-10 text-sage-600 dark:text-cream-50" />
                     </div>
                     <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                       {translate('prayerRequest', language)}
                     </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-tan-500 dark:text-neutral-400 leading-relaxed">
                       {translate('prayerDescription', language)}
                     </p>
                   </div>
@@ -188,7 +188,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           )}
 
           {pathChoice === 'need' && (
-            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+            <div className="bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
                   {translate('whatNeed', language)}
@@ -199,7 +199,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                     value={needText}
                     onChange={(e) => handleNeedTextChange(e.target.value)}
                     placeholder={translate('typeHere', language)}
-                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    className="w-full min-h-32 p-4 text-lg border-2 border-tan-400 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
                     aria-label={translate('whatNeed', language)}
                   />
 
@@ -216,13 +216,13 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                           setNeedText(translate(cat.label, language));
                         }
                       }}
-                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-sage-600 ${
                         selectedNeedCategory === cat.value
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-900'
-                          : 'border-neutral-300 dark:border-neutral-600 hover:border-blue-400'
+                          ? 'border-sage-600 bg-sand-100 dark:bg-sage-800'
+                          : 'border-tan-400 dark:border-neutral-600 hover:border-sage-600'
                       }`}
                     >
-                      <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
+                      <div className="text-sage-600 dark:text-neutral-300">{cat.icon}</div>
                       <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                         {translate(cat.label, language)}
                       </span>
@@ -233,7 +233,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                 <div className="flex gap-4">
                   <button
                     onClick={() => setPathChoice(null)}
-                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="px-6 py-4 bg-sand-100 dark:bg-neutral-700 hover:bg-tan-400 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-bold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     <ChevronLeft className="w-6 h-6" />
                     {translate('back', language)}
@@ -241,7 +241,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                   <button
                     onClick={handleSubmit}
                     disabled={submitting || !needText.trim()}
-                    className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 py-4 bg-sage-600 hover:bg-sage-700 disabled:bg-neutral-400 text-cream-50 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     {submitting ? translate('loading', language) : translate('submit', language)}
                   </button>
@@ -251,7 +251,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           )}
 
           {pathChoice === 'give' && (
-            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+            <div className="bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
                   {translate('whatGive', language)}
@@ -262,7 +262,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                     value={giveText}
                     onChange={(e) => handleGiftTextChange(e.target.value)}
                     placeholder={translate('typeHere', language)}
-                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    className="w-full min-h-32 p-4 text-lg border-2 border-tan-400 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
                     aria-label={translate('whatGive', language)}
                   />
 
@@ -270,8 +270,8 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                 </div>
 
                 {showTaxInfo && (
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-600 rounded-lg">
-                    <p className="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                  <div className="p-4 bg-sand-100 dark:bg-sage-800 border-l-4 border-sage-600 rounded-lg">
+                    <p className="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed font-semibold">
                       {translate('taxInfo', language, { ein })}
                     </p>
                   </div>
@@ -287,13 +287,13 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                           setGiveText(translate(cat.label, language));
                         }
                       }}
-                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-sage-600 ${
                         selectedGiftCategory === cat.value
-                          ? 'border-green-600 bg-green-50 dark:bg-green-900'
-                          : 'border-neutral-300 dark:border-neutral-600 hover:border-green-400'
+                          ? 'border-sage-600 bg-sand-100 dark:bg-sage-800'
+                          : 'border-tan-400 dark:border-neutral-600 hover:border-sage-600'
                       }`}
                     >
-                      <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
+                      <div className="text-sage-600 dark:text-neutral-300">{cat.icon}</div>
                       <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                         {translate(cat.label, language)}
                       </span>
@@ -304,7 +304,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                 <div className="flex gap-4">
                   <button
                     onClick={() => setPathChoice(null)}
-                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="px-6 py-4 bg-sand-100 dark:bg-neutral-700 hover:bg-tan-400 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-bold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     <ChevronLeft className="w-6 h-6" />
                     {translate('back', language)}
@@ -312,7 +312,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                   <button
                     onClick={handleSubmit}
                     disabled={submitting || !giveText.trim()}
-                    className="flex-1 py-4 bg-green-600 hover:bg-green-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="flex-1 py-4 bg-sage-600 hover:bg-sage-700 disabled:bg-neutral-400 text-cream-50 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     {submitting ? translate('loading', language) : translate('submit', language)}
                   </button>
@@ -322,7 +322,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           )}
 
           {pathChoice === 'prayer' && (
-            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+            <div className="bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
                   {translate('sayPrayer', language)}
@@ -333,7 +333,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                     value={prayerText}
                     onChange={(e) => setPrayerText(e.target.value)}
                     placeholder={translate('typeHere', language)}
-                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    className="w-full min-h-32 p-4 text-lg border-2 border-tan-400 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
                     aria-label={translate('sayPrayer', language)}
                   />
 
@@ -343,7 +343,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                 <div className="flex gap-4">
                   <button
                     onClick={() => setPathChoice(null)}
-                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="px-6 py-4 bg-sand-100 dark:bg-neutral-700 hover:bg-tan-400 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-bold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     <ChevronLeft className="w-6 h-6" />
                     {translate('back', language)}
@@ -351,7 +351,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
                   <button
                     onClick={handleSubmit}
                     disabled={submitting || !prayerText.trim()}
-                    className="flex-1 py-4 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="flex-1 py-4 bg-sage-600 hover:bg-sage-700 disabled:bg-neutral-400 text-cream-50 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-sage-600"
                   >
                     {submitting ? translate('loading', language) : translate('submit', language)}
                   </button>

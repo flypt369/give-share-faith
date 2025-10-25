@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Briefcase, HelpCircle, Heart, ChevronLeft, ChevronRight, DollarSign, Users } from 'lucide-react';
+import { Home, Briefcase, HelpCircle, Heart, ChevronLeft, ChevronRight, DollarSign, Users, HandHeart, Hand } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';
 import { VoiceInput } from './VoiceInput';
@@ -17,9 +17,11 @@ interface QuestionnaireProps {
   onComplete: () => void;
 }
 
+type PathChoice = 'need' | 'give' | 'prayer' | null;
+
 export function Questionnaire({ onComplete }: QuestionnaireProps) {
   const { language, zipCode, sessionId, ein } = useApp();
-  const [step, setStep] = useState(1);
+  const [pathChoice, setPathChoice] = useState<PathChoice>(null);
   const [needText, setNeedText] = useState('');
   const [giveText, setGiveText] = useState('');
   const [prayerText, setPrayerText] = useState('');
@@ -72,7 +74,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
     setSubmitting(true);
 
     try {
-      if (needText.trim()) {
+      if (pathChoice === 'need' && needText.trim()) {
         const category = selectedNeedCategory || classifyNeed(needText);
         await supabase.from('needs').insert({
           session_id: sessionId,
@@ -84,7 +86,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
         });
       }
 
-      if (giveText.trim()) {
+      if (pathChoice === 'give' && giveText.trim()) {
         const category = selectedGiftCategory || classifyGift(giveText);
         const giverType = detectGiverType(giveText);
         await supabase.from('gifts').insert({
@@ -97,7 +99,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
         });
       }
 
-      if (prayerText.trim()) {
+      if (pathChoice === 'prayer' && prayerText.trim()) {
         const generatedPrayer = generatePrayer(prayerText, language);
         await supabase.from('prayers').insert({
           session_id: sessionId,
@@ -118,161 +120,242 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-green-50 dark:from-neutral-900 dark:to-neutral-800">
       <div className="flex-1 flex items-center justify-center p-6">
-        <div className="max-w-3xl w-full bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
-          {step === 1 && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                {translate('whatNeed', language)}
-              </h2>
-
-              <div className="space-y-4">
-                <textarea
-                  value={needText}
-                  onChange={(e) => handleNeedTextChange(e.target.value)}
-                  placeholder={translate('typeHere', language)}
-                  className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
-                  aria-label={translate('whatNeed', language)}
-                />
-
-                <VoiceInput onTranscript={(text) => handleNeedTextChange(needText + ' ' + text)} />
+        <div className="max-w-4xl w-full">
+          {!pathChoice && (
+            <div className="space-y-8">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                  {translate('chooseAction', language)}
+                </h2>
+                <p className="text-lg text-neutral-600 dark:text-neutral-400">
+                  Select one option to continue
+                </p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {needCategories.map((cat) => (
-                  <button
-                    key={cat.value}
-                    onClick={() => {
-                      setSelectedNeedCategory(cat.value);
-                      if (!needText.trim()) {
-                        setNeedText(translate(cat.label, language));
-                      }
-                    }}
-                    className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      selectedNeedCategory === cat.value
-                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-900'
-                        : 'border-neutral-300 dark:border-neutral-600 hover:border-blue-400'
-                    }`}
-                  >
-                    <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
-                    <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      {translate(cat.label, language)}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                <button
+                  onClick={() => setPathChoice('need')}
+                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-blue-500 hover:scale-105"
+                >
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors">
+                      <Hand className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                      {translate('iNeed', language)}
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {translate('needDescription', language)}
+                    </p>
+                  </div>
+                </button>
 
-              <button
-                onClick={() => setStep(2)}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {translate('next', language)}
-                <ChevronRight className="w-6 h-6" />
-              </button>
+                <button
+                  onClick={() => setPathChoice('give')}
+                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-green-500 hover:scale-105"
+                >
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="w-20 h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors">
+                      <HandHeart className="w-10 h-10 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                      {translate('iCanGive', language)}
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {translate('giveDescription', language)}
+                    </p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setPathChoice('prayer')}
+                  className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all focus:outline-none focus:ring-4 focus:ring-purple-500 hover:scale-105"
+                >
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors">
+                      <Heart className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                      {translate('prayerRequest', language)}
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      {translate('prayerDescription', language)}
+                    </p>
+                  </div>
+                </button>
+              </div>
             </div>
           )}
 
-          {step === 2 && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                {translate('whatGive', language)}
-              </h2>
+          {pathChoice === 'need' && (
+            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {translate('whatNeed', language)}
+                </h2>
 
-              <div className="space-y-4">
-                <textarea
-                  value={giveText}
-                  onChange={(e) => handleGiftTextChange(e.target.value)}
-                  placeholder={translate('typeHere', language)}
-                  className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
-                  aria-label={translate('whatGive', language)}
-                />
+                <div className="space-y-4">
+                  <textarea
+                    value={needText}
+                    onChange={(e) => handleNeedTextChange(e.target.value)}
+                    placeholder={translate('typeHere', language)}
+                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    aria-label={translate('whatNeed', language)}
+                  />
 
-                <VoiceInput onTranscript={(text) => handleGiftTextChange(giveText + ' ' + text)} />
-              </div>
-
-              {showTaxInfo && (
-                <div className="p-4 bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-600 rounded-lg">
-                  <p className="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed">
-                    {translate('taxInfo', language, { ein })}
-                  </p>
+                  <VoiceInput onTranscript={(text) => handleNeedTextChange(needText + ' ' + text)} />
                 </div>
-              )}
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {giftCategories.map((cat) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {needCategories.map((cat) => (
+                    <button
+                      key={cat.value}
+                      onClick={() => {
+                        setSelectedNeedCategory(cat.value);
+                        if (!needText.trim()) {
+                          setNeedText(translate(cat.label, language));
+                        }
+                      }}
+                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        selectedNeedCategory === cat.value
+                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-900'
+                          : 'border-neutral-300 dark:border-neutral-600 hover:border-blue-400'
+                      }`}
+                    >
+                      <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
+                      <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {translate(cat.label, language)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex gap-4">
                   <button
-                    key={cat.value}
-                    onClick={() => {
-                      setSelectedGiftCategory(cat.value);
-                      if (!giveText.trim()) {
-                        setGiveText(translate(cat.label, language));
-                      }
-                    }}
-                    className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      selectedGiftCategory === cat.value
-                        ? 'border-green-600 bg-green-50 dark:bg-green-900'
-                        : 'border-neutral-300 dark:border-neutral-600 hover:border-green-400'
-                    }`}
+                    onClick={() => setPathChoice(null)}
+                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
                   >
-                    <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
-                    <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      {translate(cat.label, language)}
-                    </span>
+                    <ChevronLeft className="w-6 h-6" />
+                    {translate('back', language)}
                   </button>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setStep(1)}
-                  className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                  {translate('back', language)}
-                </button>
-                <button
-                  onClick={() => setStep(3)}
-                  className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {translate('next', language)}
-                  <ChevronRight className="w-6 h-6" />
-                </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={submitting || !needText.trim()}
+                    className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {submitting ? translate('loading', language) : translate('submit', language)}
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          {step === 3 && (
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                {translate('sayPrayer', language)}
-              </h2>
+          {pathChoice === 'give' && (
+            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {translate('whatGive', language)}
+                </h2>
 
-              <div className="space-y-4">
-                <textarea
-                  value={prayerText}
-                  onChange={(e) => setPrayerText(e.target.value)}
-                  placeholder={translate('typeHere', language)}
-                  className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
-                  aria-label={translate('sayPrayer', language)}
-                />
+                <div className="space-y-4">
+                  <textarea
+                    value={giveText}
+                    onChange={(e) => handleGiftTextChange(e.target.value)}
+                    placeholder={translate('typeHere', language)}
+                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    aria-label={translate('whatGive', language)}
+                  />
 
-                <VoiceInput onTranscript={(text) => setPrayerText(prayerText + ' ' + text)} />
+                  <VoiceInput onTranscript={(text) => handleGiftTextChange(giveText + ' ' + text)} />
+                </div>
+
+                {showTaxInfo && (
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-600 rounded-lg">
+                    <p className="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                      {translate('taxInfo', language, { ein })}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {giftCategories.map((cat) => (
+                    <button
+                      key={cat.value}
+                      onClick={() => {
+                        setSelectedGiftCategory(cat.value);
+                        if (!giveText.trim()) {
+                          setGiveText(translate(cat.label, language));
+                        }
+                      }}
+                      className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        selectedGiftCategory === cat.value
+                          ? 'border-green-600 bg-green-50 dark:bg-green-900'
+                          : 'border-neutral-300 dark:border-neutral-600 hover:border-green-400'
+                      }`}
+                    >
+                      <div className="text-neutral-700 dark:text-neutral-300">{cat.icon}</div>
+                      <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {translate(cat.label, language)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setPathChoice(null)}
+                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                    {translate('back', language)}
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={submitting || !giveText.trim()}
+                    className="flex-1 py-4 bg-green-600 hover:bg-green-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    {submitting ? translate('loading', language) : translate('submit', language)}
+                  </button>
+                </div>
               </div>
+            </div>
+          )}
 
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setStep(2)}
-                  className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                  {translate('back', language)}
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={submitting}
-                  className="flex-1 py-4 bg-green-600 hover:bg-green-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  {submitting ? translate('loading', language) : translate('submit', language)}
-                </button>
+          {pathChoice === 'prayer' && (
+            <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 md:p-12">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {translate('sayPrayer', language)}
+                </h2>
+
+                <div className="space-y-4">
+                  <textarea
+                    value={prayerText}
+                    onChange={(e) => setPrayerText(e.target.value)}
+                    placeholder={translate('typeHere', language)}
+                    className="w-full min-h-32 p-4 text-lg border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
+                    aria-label={translate('sayPrayer', language)}
+                  />
+
+                  <VoiceInput onTranscript={(text) => setPrayerText(prayerText + ' ' + text)} />
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setPathChoice(null)}
+                    className="px-6 py-4 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-900 dark:text-neutral-100 text-lg font-semibold rounded-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                    {translate('back', language)}
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={submitting || !prayerText.trim()}
+                    className="flex-1 py-4 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-400 text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    {submitting ? translate('loading', language) : translate('submit', language)}
+                  </button>
+                </div>
               </div>
             </div>
           )}

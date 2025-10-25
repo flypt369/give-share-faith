@@ -2,83 +2,67 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, SkipForward } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';
-import { supabase } from '../lib/supabase';
-import { Story } from '../types/database';
 
 interface LandingStoriesProps {
   onComplete: () => void;
 }
 
 export function LandingStories({ onComplete }: LandingStoriesProps) {
-  const { language, zipCode } = useApp();
-  const [stories, setStories] = useState<Story[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const { language } = useApp();
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [helpTextIndex, setHelpTextIndex] = useState(0);
+  const [fade, setFade] = useState(true);
 
   const helpTexts = ['Food', 'Housing', 'Mental Health', 'Prayer', 'Job Help', 'Something Else?'];
 
-  useEffect(() => {
-    fetchStories();
-  }, [zipCode]);
+  const localStories = [
+    {
+      image: '/asian-man-walking-on-street-with-groceries-on-hands.webp',
+      imageAlt: 'Community member with groceries',
+      imagePosition: 'center 35%',
+      text: 'Someone in your community was recently able to get food for their family. Your generosity makes stories like this possible. Together, we are building a network of care—one neighbor at a time.'
+    },
+    {
+      image: '/danielle.png',
+      imageAlt: 'Danielle',
+      imagePosition: 'center 20%',
+      text: '"My name is Danielle. For a long time, I believed asking for help meant I was falling behind. I kept my worries tucked away behind a smile, convincing everyone, including myself, that I could manage everything alone.\n\nI work full-time, I take care of my mother, and I have a daughter who makes every long day worth it. Still, I noticed the weight getting heavier. The missed checkups. The quick meals grabbed between shifts. The stress that never ended, only paused.\n\nOne afternoon at the clinic, a woman handed me a card and said, \'You deserve care too.\' I wanted to laugh it off. Yet later that night, I tapped on the link.\n\nIt was the first time someone asked, \'How can we support you today?\' No judgment. No assumptions. Just kindness and options.\n\nNow I know care does not replace strength. It restores it.\n\nI am still the one holding my family together. The only difference is that now, someone is holding me too."'
+    }
+  ];
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const helpInterval = setInterval(() => {
       setHelpTextIndex((prev) => (prev + 1) % helpTexts.length);
     }, 1500);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(helpInterval);
   }, []);
 
-  async function fetchStories() {
-    setLoading(true);
-    const { data } = await supabase
-      .from('stories')
-      .select('*')
-      .eq('active', true)
-      .order('created_at', { ascending: false })
-      .limit(5);
+  useEffect(() => {
+    const storyInterval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrentStoryIndex((prev) => (prev + 1) % localStories.length);
+        setFade(true);
+      }, 500);
+    }, 45000);
 
-    if (data) {
-      setStories(data);
-    }
-    setLoading(false);
-  }
+    return () => clearInterval(storyInterval);
+  }, []);
 
-  function handleNext() {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      onComplete();
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-neutral-900 dark:to-neutral-800">
-        <p className="text-xl text-neutral-600 dark:text-neutral-400">{translate('loading', language)}</p>
-      </div>
-    );
-  }
-
-  if (stories.length === 0) {
-    onComplete();
-    return null;
-  }
-
-  const currentStory = stories[currentIndex];
+  const currentStory = localStories[currentStoryIndex];
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-cream-50 to-sand-100 dark:from-neutral-900 dark:to-neutral-800 p-6">
       <div className="max-w-4xl w-full bg-cream-50 dark:bg-neutral-800 rounded-2xl shadow-2xl overflow-hidden">
-        <div className="relative h-64 md:h-80 w-full overflow-hidden">
+        <div className={`relative h-64 md:h-80 w-full overflow-hidden transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
           <img
-            src="/asian-man-walking-on-street-with-groceries-on-hands.webp"
-            alt="Community member with groceries"
+            src={currentStory.image}
+            alt={currentStory.imageAlt}
             className="w-full h-full object-cover object-center"
-            style={{ objectPosition: 'center 35%' }}
+            style={{ objectPosition: currentStory.imagePosition }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-cream-50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-cream-50 dark:from-neutral-800 to-transparent"></div>
         </div>
 
         <div className="p-8 md:p-12">
@@ -97,19 +81,23 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
             </h2>
           </div>
 
-          <div className="mb-8">
-            <p className="text-2xl md:text-3xl text-tan-500 dark:text-neutral-100 leading-relaxed font-light">
-              {currentStory.anonymized_text}
-            </p>
+          <div className={`mb-8 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="text-lg md:text-xl text-tan-500 dark:text-neutral-100 leading-relaxed font-light max-h-[400px] overflow-y-auto">
+              {currentStory.text.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="mb-4 last:mb-0">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex gap-2">
-              {stories.map((_, idx) => (
+              {localStories.map((_, idx) => (
                 <div
                   key={idx}
                   className={`h-2 rounded-full transition-all ${
-                    idx === currentIndex
+                    idx === currentStoryIndex
                       ? 'w-8 bg-sage-600 dark:bg-sage-600'
                       : 'w-2 bg-tan-400 dark:bg-neutral-600'
                   }`}
@@ -127,10 +115,10 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
               </button>
 
               <button
-                onClick={handleNext}
+                onClick={onComplete}
                 className="px-6 py-3 bg-sage-600 hover:bg-sage-700 text-cream-50 font-bold rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-sage-600"
               >
-                {translate(currentIndex < stories.length - 1 ? 'continueReading' : 'next', language)}
+                {translate('next', language)}
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>

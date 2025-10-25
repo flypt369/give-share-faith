@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from './src/contexts/AppContext';
 import { Header } from './src/components/Header';
 import { Footer } from './src/components/Footer';

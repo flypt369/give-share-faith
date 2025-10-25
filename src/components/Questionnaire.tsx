@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Home, Briefcase, HelpCircle, Heart, ChevronLeft, ChevronRight, DollarSign, Users } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Globe, Moon } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';

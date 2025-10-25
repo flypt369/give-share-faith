@@ -106,7 +106,7 @@ export function Results() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-            {translate('thankYou', language)}
+            Thank you for giving <span style={{ color: '#DD0303' }}>✝</span> sharing. Your support helps neighbors in need—and may be tax-deductible.
           </h2>
           <p className="text-xl text-tan-500 dark:text-neutral-300 font-semibold">
             {resources.length > 0 ? translate('matches', language) : translate('noMatches', language)}

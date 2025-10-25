@@ -2,6 +2,7 @@ import React from 'react';
 import { Globe, Moon, Home } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';
+import { AppName } from '../lib/appName';
 import { LanguageCode } from '../types/database';
 
 interface HeaderProps {
@@ -23,10 +24,12 @@ export function Header({ onHomeClick }: HeaderProps) {
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-            {translate('appName', language)}
+            <AppName />
           </h1>
           <span className="hidden sm:inline-block text-xs bg-sage-600 text-cream-50 px-3 py-1 rounded-full font-semibold">
-            {translate('nonprofit', language)}
+            <span>
+              Give <span style={{ color: '#DD0303' }}>✝</span> Share is a 501(c)(3) nonprofit
+            </span>
           </span>
         </div>
 

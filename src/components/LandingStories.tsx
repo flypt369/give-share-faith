@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, SkipForward } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';
+import { AppName } from '../lib/appName';
 
 interface LandingStoriesProps {
   onComplete: () => void;
@@ -68,7 +69,9 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
         <div className="p-8 md:p-12">
           <div className="mb-6">
             <span className="inline-block px-3 py-1 bg-sage-600 text-cream-50 rounded-full text-sm font-semibold">
-              {translate('nonprofit', language)}
+              <span>
+                Give <span style={{ color: '#DD0303' }}>✝</span> Share is a 501(c)(3) nonprofit
+              </span>
             </span>
           </div>
 
@@ -128,7 +131,7 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
 
       <div className="mt-8 text-center max-w-xl">
         <p className="text-lg text-tan-500 dark:text-neutral-300 font-semibold">
-          "Give ✝ Share connects neighbors in need with those who can give—rooted in compassion, designed for dignity."
+          "Give <span style={{ color: '#DD0303' }}>✝</span> Share connects neighbors in need with those who can give—rooted in compassion, designed for dignity."
         </p>
       </div>
     </div>

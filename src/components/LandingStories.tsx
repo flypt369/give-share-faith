@@ -14,10 +14,21 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
   const [stories, setStories] = useState<Story[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [helpTextIndex, setHelpTextIndex] = useState(0);
+
+  const helpTexts = ['Food', 'Housing', 'Mental Health', 'Prayer', 'Job Help', 'Something Else?'];
 
   useEffect(() => {
     fetchStories();
   }, [zipCode]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHelpTextIndex((prev) => (prev + 1) % helpTexts.length);
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   async function fetchStories() {
     setLoading(true);
@@ -64,6 +75,15 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
           <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
             {translate('nonprofit', language)}
           </span>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
+            Need help with{' '}
+            <span className="inline-block min-w-[200px] text-blue-600 dark:text-blue-400 transition-all duration-300">
+              {helpTexts[helpTextIndex]}
+            </span>
+          </h2>
         </div>
 
         <div className="mb-8">

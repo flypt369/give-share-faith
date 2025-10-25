@@ -20,7 +20,7 @@ interface QuestionnaireProps {
 type PathChoice = 'need' | 'give' | 'prayer' | null;
 
 export function Questionnaire({ onComplete }: QuestionnaireProps) {
-  const { language, zipCode, sessionId, ein } = useApp();
+  const { language, zipCode, sessionId, ein, setSubmissionType, setPrayerText: setContextPrayerText } = useApp();
   const [pathChoice, setPathChoice] = useState<PathChoice>(null);
   const [needText, setNeedText] = useState('');
   const [giveText, setGiveText] = useState('');
@@ -84,6 +84,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           urgency: 'medium',
           status: 'open',
         });
+        setSubmissionType('need');
       }
 
       if (pathChoice === 'give' && giveText.trim()) {
@@ -97,6 +98,7 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           zip_code: zipCode,
           status: 'available',
         });
+        setSubmissionType('give');
       }
 
       if (pathChoice === 'prayer' && prayerText.trim()) {
@@ -107,6 +109,8 @@ export function Questionnaire({ onComplete }: QuestionnaireProps) {
           generated_prayer: generatedPrayer,
           zip_code: zipCode,
         });
+        setSubmissionType('prayer');
+        setContextPrayerText(prayerText);
       }
 
       onComplete();

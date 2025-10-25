@@ -11,6 +11,10 @@ interface AppContextType {
   setZipCode: (zip: string) => void;
   sessionId: string | null;
   ein: string;
+  submissionType: 'need' | 'give' | 'prayer' | null;
+  setSubmissionType: (type: 'need' | 'give' | 'prayer' | null) => void;
+  prayerText: string;
+  setPrayerText: (text: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -21,6 +25,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [zipCode, setZipCode] = useState('10001');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [ein, setEin] = useState('00-0000000');
+  const [submissionType, setSubmissionType] = useState<'need' | 'give' | 'prayer' | null>(null);
+  const [prayerText, setPrayerText] = useState('');
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as LanguageCode;
@@ -97,6 +103,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setZipCode: handleSetZipCode,
         sessionId,
         ein,
+        submissionType,
+        setSubmissionType,
+        prayerText,
+        setPrayerText,
       }}
     >
       {children}

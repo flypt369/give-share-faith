@@ -75,7 +75,8 @@ export function LandingStories({ onComplete }: LandingStoriesProps) {
           <img
             src="/asian-man-walking-on-street-with-groceries-on-hands.webp"
             alt="Community member with groceries"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
+            style={{ objectPosition: 'center 35%' }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-cream-50 to-transparent"></div>
         </div>

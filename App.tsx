@@ -7,7 +7,7 @@ import { Questionnaire } from './src/components/Questionnaire';
 import { Results } from './src/components/Results';
 
 function AppContent() {
-  const { highContrast } = useApp();
+  const { highContrast, setSubmissionType } = useApp();
   const [stage, setStage] = useState<'stories' | 'questionnaire' | 'results'>('stories');
 
   useEffect(() => {
@@ -18,9 +18,14 @@ function AppContent() {
     }
   }, [highContrast]);
 
+  const handleHomeClick = () => {
+    setStage('stories');
+    setSubmissionType(null);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      {stage !== 'stories' && <Header />}
+      {stage !== 'stories' && <Header onHomeClick={handleHomeClick} />}
 
       <main className="flex-1">
         {stage === 'stories' && <LandingStories onComplete={() => setStage('questionnaire')} />}

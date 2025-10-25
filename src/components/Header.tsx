@@ -1,10 +1,14 @@
 import React from 'react';
-import { Globe, Moon } from 'lucide-react';
+import { Globe, Moon, Home } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import { translate } from '../lib/translations';
 import { LanguageCode } from '../types/database';
 
-export function Header() {
+interface HeaderProps {
+  onHomeClick?: () => void;
+}
+
+export function Header({ onHomeClick }: HeaderProps) {
   const { language, setLanguage, toggleHighContrast } = useApp();
 
   const languages: { code: LanguageCode; label: string }[] = [
@@ -27,6 +31,16 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
+          {onHomeClick && (
+            <button
+              onClick={onHomeClick}
+              className="p-2 rounded-lg hover:bg-sand-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-sage-600 text-sage-600 dark:text-neutral-300"
+              aria-label="Home"
+              title="Home"
+            >
+              <Home className="w-5 h-5" />
+            </button>
+          )}
           <button
             onClick={toggleHighContrast}
             className="p-2 rounded-lg hover:bg-sand-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-sage-600 text-sage-600 dark:text-neutral-300"
